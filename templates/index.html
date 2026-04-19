@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Absence Manager</title>
+    <link rel="stylesheet" href="static/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="index">
+
+<h1>Managment Absents</h1>
+
+<hr>
+
+<form method="POST" action="/add_absence">
+
+    <label>Class:</label>
+    <select name="class" id="classSelect" onchange="loadStudents()">
+        {% for c in classes %}
+        <option value="{{c}}">{{c}}</option>
+        {% endfor %}
+    </select>
+
+    <label>Student:</label>
+    <select name="student" id="studentSelect"></select>
+
+    <label>Month:</label>
+    <select name="month">
+        <option value="sep">Sep</option>
+        <option value="oct">Oct</option>
+        <option value="nov">Nov</option>
+        <option value="dec">Dec</option>
+        <option value="jan">Jan</option>
+        <option value="feb">Feb</option>
+        <option value="mar">Mar</option>
+        <option value="apr">Apr</option>
+        <option value="may">May</option>
+        <option value="jun">Jun</option>
+    </select>
+
+    <label>Number Absents: </label>
+    <input type="number" name="value" required>
+
+    <button type="submit">Save</button>
+</form>
+
+<h2>Reports</h2>
+
+<hr>
+
+<div>
+    {% for c in classes %}
+    <a href="/report/{{c}}" target="_blank">Print {{c}}</a><br>
+    {% endfor %}
+</div>
+
+<script>
+function loadStudents(){
+    let className = document.getElementById("classSelect").value;
+
+    fetch("/students/" + className)
+    .then(res => res.json())
+    .then(data => {
+        let select = document.getElementById("studentSelect");
+        select.innerHTML = "";
+        data.students.forEach(s => {
+            let option = document.createElement("option");
+            option.value = s[0];
+            option.text = s[1];
+            select.appendChild(option);
+        });
+    });
+}
+
+loadStudents();
+</script>
+
+<h1>Ai Help Center</h1>
+
+<hr>
+
+<a href="/chat" class="fa-solid fa-comments"></a>
+
+</body>
+</html>

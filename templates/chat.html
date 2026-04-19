@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>AI Help Center</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="help-center">
+
+<h1 class="title-boot">Ai Help Center</h1>
+
+<form method="POST">
+    <input class="ask" type="text" name="message" placeholder="Write your question" required>
+    <button type="submit">Send</button>
+</form>
+
+<div>
+    <p>{{response}}</p>
+</div>
+
+<a href="/" class="back-btn">
+  <i class="fa-solid fa-chevron-left"></i>
+</a>
+
+</body>
+</html>

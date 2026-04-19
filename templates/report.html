@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Report</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="report">
+
+<h1>Report {{class_name}}</h1>
+
+<table border="1">
+    <tr>
+        <th>Name</th>
+        <th>Sep</th>
+        <th>Oct</th>
+        <th>Nov</th>
+        <th>Dec</th>
+        <th>Jan</th>
+        <th>Feb</th>
+        <th>Mar</th>
+        <th>Apr</th>
+        <th>May</th>
+        <th>Jun</th>
+    </tr>
+
+    {% for row in data %}
+    <tr>
+        <td>{{row[1]}}</td>
+
+       {% for i in range(2, 12) %}
+      <td>{{row[i]}}</td>
+       {% endfor %}
+
+    </tr>
+    {% endfor %}
+
+</table>
+
+<button onclick="window.print()">Print</button>
+
+<a href="/" class="back-btn">
+  <i class="fa-solid fa-chevron-left"></i>
+</a>
+
+</body>
+</html>
