@@ -37,7 +37,7 @@
         <option value="jun">Jun</option>
     </select>
 
-    <label>Number Absents: </label>
+    <label>Number Absents:</label>
     <input type="number" name="value" required>
 
     <button type="submit">Save</button>
@@ -49,9 +49,46 @@
 
 <div>
     {% for c in classes %}
-    <a href="/report/{{c}}" target="_blank">Print {{c}}</a><br>
+    <a href="/report/{{c}}" target="_self">Print {{c}}</a><br>
     {% endfor %}
 </div>
+
+<h2>Parent Data</h2>
+
+<hr>
+
+<form class="data-info" method="POST" action="/add_parent">
+
+    <label>Student Name:</label>
+    <input type="text" name="student_name" required>
+
+    <label>Father Name:</label>
+    <input type="text" name="father_name" required>
+
+    <label>CIN:</label>
+    <input type="text" name="cin" required>
+
+    <label>Date:</label>
+    <input type="date" name="date" required>
+
+    <label>Reason:</label>
+    <input type="text" name="reason" required>
+
+    <button type="submit">Save</button>
+</form>
+
+<a href="/parents" class="search-btn">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    Search Parent Records
+</a>
+
+<br>
+
+<h1>Ai Help Center</h1>
+
+<hr>
+
+<a href="/chat" class="fa-solid fa-comments"></a>
 
 <script>
 function loadStudents(){
@@ -73,12 +110,6 @@ function loadStudents(){
 
 loadStudents();
 </script>
-
-<h1>Ai Help Center</h1>
-
-<hr>
-
-<a href="/chat" class="fa-solid fa-comments"></a>
 
 </body>
 </html>

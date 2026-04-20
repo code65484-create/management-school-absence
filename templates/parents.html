@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Search Parents</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+</head>
+<body class="parents">
+
+<h1>Search Parent Data</h1>
+
+<form  method="POST">
+    <input type="text" name="search" placeholder="Search by name, CIN, date..." required>
+    <button type="submit">Search</button>
+</form>
+
+<table border="1">
+    <tr class="data-students">
+        <th>Student</th>
+        <th>Father</th>
+        <th>CIN</th>
+        <th>Date</th>
+        <th>Reason</th>
+    </tr>
+
+    {% for row in results %}
+    <tr class="result-students">
+        <td>{{row[1]}}</td>
+        <td>{{row[2]}}</td>
+        <td>{{row[3]}}</td>
+        <td>{{row[4]}}</td>
+        <td>{{row[5]}}</td>
+    </tr>
+    {% endfor %}
+</table>
+
+<a href="/" class="back-btn">
+  <i class="fa-solid fa-chevron-left"></i>
+</a>
+
+</body>
+</html>

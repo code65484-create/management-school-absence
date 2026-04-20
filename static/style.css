@@ -151,3 +151,44 @@ button:hover {
 .ask{
     flex-grow: 1;
 }
+
+.data-info input{
+    flex: 1;
+    min-width: 150px;
+}
+
+.search-btn{
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: aqua;
+    color: black;
+    padding: 10px 15px;
+    border-radius: 8px;
+    text-decoration: none;
+    margin: 15px;
+    transition: 0.3s;
+}
+
+.search-btn i{
+    font-size: 14px;
+}
+
+.search-btn:hover{
+    background: #000860;
+    transform: scale(1.05);
+}
+.data-students{
+    background: #0f3460;
+    color: #00ffff;
+}
+.result-students{
+    background: #012356;
+    color: white;
+}
+.parents{
+    background: #012356;
+    color: white;
+    font-family: Arial;
+    text-align: center;
+}

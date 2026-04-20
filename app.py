@@ -24,6 +24,7 @@ def init_db():
 
     classes = ["1BACSEF-1", "1BACSEG-1", "2BACSH-1"]
 
+    
     for c in classes:
         cur.execute(f"""
         CREATE TABLE IF NOT EXISTS '{c}' (
@@ -42,19 +43,32 @@ def init_db():
         )
         """)
 
-
         cur.execute(f"SELECT COUNT(*) FROM '{c}'")
         if cur.fetchone()[0] == 0:
             for i in range(1, 6):
                 cur.execute(f"INSERT INTO '{c}' (name) VALUES (?)", (f"Student {i}",))
 
+    
+    cur.execute("""
+    CREATE TABLE IF NOT EXISTS parents (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        student_name TEXT,
+        father_name TEXT,
+        cin TEXT,
+        date TEXT,
+        reason TEXT
+    )
+    """)
+
     conn.commit()
     conn.close()
+
 
 @app.route('/')
 def index():
     classes = ["1BACSEF-1", "1BACSEG-1", "2BACSH-1"]
     return render_template("index.html", classes=classes)
+
 
 @app.route('/students/<class_name>')
 def students(class_name):
@@ -64,6 +78,7 @@ def students(class_name):
     students = cur.fetchall()
     conn.close()
     return {"students": students}
+
 
 @app.route('/add_absence', methods=['POST'])
 def add_absence():
@@ -80,6 +95,7 @@ def add_absence():
 
     return redirect('/')
 
+
 @app.route('/report/<class_name>')
 def report(class_name):
     conn = get_db()
@@ -90,16 +106,26 @@ def report(class_name):
     return render_template("report.html", data=data, class_name=class_name)
 
 
-genai.configure(api_key="AIzaSyDPPAUc4UPZ9Q_4y0fOsvboY708j23JCsQ")
+@app.route('/add_parent', methods=['POST'])
+def add_parent():
+    student_name = request.form['student_name']
+    father_name = request.form['father_name']
+    cin = request.form['cin']
+    date = request.form['date']
+    reason = request.form['reason']
 
+    conn = get_db()
+    cur = conn.cursor()
 
-model = genai.GenerativeModel("gemini-2.5-flash")
-chat_model = model.start_chat(history=[])
+    cur.execute("""
+    INSERT INTO parents (student_name, father_name, cin, date, reason)
+    VALUES (?, ?, ?, ?, ?)
+    """, (student_name, father_name, cin, date, reason))
 
+    conn.commit()
+    conn.close()
 
-def get_db():
-    db_path = os.path.join(os.path.dirname(__file__), "school.db")
-    return sqlite3.connect(db_path)
+    return redirect('/')
 
 
 @app.route('/chat', methods=['GET', 'POST'])
@@ -160,11 +186,11 @@ IMPORTANT:
 If the data is not enough, say that clearly.
 
         this is data of absents:
-        {all_data}
+{all_data}
 
-        question:
-        {user_message}
-        """
+User:
+{user_message}
+"""
 
         try:
             response = chat_model.send_message(prompt)
@@ -173,6 +199,30 @@ If the data is not enough, say that clearly.
             response_text = str(e)
 
     return render_template("chat.html", response=response_text)
+
+@app.route('/parents', methods=['GET', 'POST'])
+def parents():
+    conn = get_db()
+    cur = conn.cursor()
+
+    results = []
+
+    if request.method == 'POST':
+        search = request.form['search']
+
+        cur.execute("""
+        SELECT * FROM parents
+        WHERE student_name LIKE ?
+        OR father_name LIKE ?
+        OR cin LIKE ?
+        OR date LIKE ?
+        """, (f"%{search}%", f"%{search}%", f"%{search}%", f"%{search}%"))
+
+        results = cur.fetchall()
+
+    conn.close()
+
+    return render_template("parents.html", results=results)
 
 if __name__ == '__main__':
     init_db()
